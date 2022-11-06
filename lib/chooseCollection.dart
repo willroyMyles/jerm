@@ -27,6 +27,8 @@ class ChooseCollection extends StatelessWidget {
               TextButton(
                   onPressed: () async {
                     await Ex.generateCollection(tc.text);
+                    Get.close(1);
+                    controller.setUp();
                   },
                   child: const Text("generate"))
             ]),
@@ -117,7 +119,7 @@ class ChooseCollectionController extends GetxController {
     var child = parent?.codes.firstWhere((element) => element.id == id);
 
     if (child != null) {
-      await Ex.updateShared(child, "${parent!.title}-${parent.id}");
+      await Ex.updateShared(child, parent!.title);
       Get.back();
       setUp();
     }

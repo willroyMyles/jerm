@@ -111,9 +111,9 @@ class TicketOperations extends StatelessWidget {
                                   // .changeNum(count, codes.id, item.id);
                                 },
                                 child: const Text("Share")),
-                          if (item.isEditing)
-                            TextButton(
-                                onPressed: () {}, child: const Text("save")),
+                          // if (item.isEditing)
+                          //   TextButton(
+                          //       onPressed: () {}, child: const Text("save")),
                         ],
                       )
                     ],

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jerm/models/codeParent.model.dart';
 import 'package:nanoid/async.dart';
@@ -10,17 +12,32 @@ class Executor {
   generateCollection(String name, {int amount = 50}) async {
     var pid = await nanoid(8);
     var cid = await nanoid(8);
-    var path = "$name-$pid";
+    var path = name;
+
     var doc = CodeParent(
         id: pid,
         title: name,
-        codes: List.generate(amount,
-            (index) => Codes(id: "$pid-$index", parentId: pid, path: path)));
+        codes: List.generate(amount, (index) {
+          return Codes(
+              id: "${_customAlphabet(urlAlphabet, 5).toUpperCase()}-$index",
+              parentId: pid,
+              path: path);
+        }));
     db.collection(collection).doc(path).set(doc.toMap());
   }
 
+  String _customAlphabet(String alphabet, int size) {
+    final len = alphabet.length;
+    var random = Random();
+    String id = '';
+    while (0 < size--) {
+      id += alphabet[random.nextInt(len)];
+    }
+    return id;
+  }
+
   saveList(CodeParent p) async {
-    db.collection(collection).doc("${p.title}-${p.id}").set(p.toMap());
+    db.collection(collection).doc(p.title).set(p.toMap());
   }
 
   updateShared(Codes c, String doc) async {
